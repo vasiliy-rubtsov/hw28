@@ -31,7 +31,7 @@ public class EmployeesService implements IEmployeesService {
      * @return
      */
     @Override
-    public String getMinSalary(Integer departmentId) {
+    public Employee getMinSalary(Integer departmentId) {
         if (!employees.containsKey(departmentId)) {
             throw new DepartmentNotFoundException();
         }
@@ -39,7 +39,7 @@ public class EmployeesService implements IEmployeesService {
         return employeesOfDepartment
                 .stream()
                 .min(Comparator.comparingInt(Employee::getSalary))
-                .toString();
+                .orElse(null);
     }
 
     /**
@@ -48,7 +48,7 @@ public class EmployeesService implements IEmployeesService {
      * @return
      */
     @Override
-    public String getMaxSalary(Integer departmentId) {
+    public Employee getMaxSalary(Integer departmentId) {
         if (!employees.containsKey(departmentId)) {
             throw new DepartmentNotFoundException();
         }
@@ -56,7 +56,7 @@ public class EmployeesService implements IEmployeesService {
         return employeesOfDepartment
                 .stream()
                 .max(Comparator.comparingInt(Employee::getSalary))
-                .toString();
+                .orElse(null);
 
     }
 
@@ -66,15 +66,11 @@ public class EmployeesService implements IEmployeesService {
      * @return
      */
     @Override
-    public String getAll(Integer departmentId) {
+    public List<Employee> getAll(Integer departmentId) {
         if (!employees.containsKey(departmentId)) {
             throw new DepartmentNotFoundException();
         }
-        List<Employee> employeesOfDepartment = employees.get(departmentId);
-        return employeesOfDepartment
-                .stream()
-                .map(Employee::toString)
-                .collect(Collectors.joining("\r\n"));
+        return employees.get(departmentId);
     }
 
     /**
@@ -82,14 +78,8 @@ public class EmployeesService implements IEmployeesService {
      * @return
      */
     @Override
-    public String getAll() {
-        String result = "";
-        for (Integer key : employees.keySet()) {
-            result += "Отдел " + key + "\r\n" +
-                    getAll(key) + "\r\n" +
-                    "================================\r\n";
-        }
-        return result;
+    public Map<Integer, List<Employee>> getAll() {
+        return employees;
     }
 
 

@@ -4,7 +4,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.freepainter.hw28.models.Employee;
 import ru.freepainter.hw28.services.IEmployeesService;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/departments")
@@ -16,23 +20,22 @@ public class DepartmentController {
     }
 
     @GetMapping(path = "/min-salary")
-    public String getMinSalary(@RequestParam("departmentId") Integer departmentId) {
+    public Employee getMinSalary(@RequestParam("departmentId") Integer departmentId) {
         return employeesService.getMinSalary(departmentId);
     }
 
     @GetMapping(path = "/max-salary")
-    public String getMaxSalary(@RequestParam("departmentId") Integer departmentId) {
+    public Employee getMaxSalary(@RequestParam("departmentId") Integer departmentId) {
         return employeesService.getMaxSalary(departmentId);
     }
 
     @GetMapping(path = "/all", params = {"departmentId"})
-    public String getAll(@RequestParam("departmentId") Integer departmentId) {
+    public List<Employee> getAll(@RequestParam("departmentId") Integer departmentId) {
         return employeesService.getAll(departmentId);
     }
 
     @GetMapping(path = "/all")
-    public String getAll() {
+    public Map<Integer, List<Employee>> getAll() {
         return employeesService.getAll();
     }
-
 }
